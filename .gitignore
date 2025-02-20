@@ -2,5 +2,5 @@
 .idea
 *.db
 
-database/__pycache__/
+database/__pycache__
 
