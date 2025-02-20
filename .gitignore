@@ -2,5 +2,6 @@
 .idea
 *.db
 *.cpython-312.pyc
+
 database/__pycache__/
 
