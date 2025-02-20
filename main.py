@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from database.create import initDB
-from database.request_DB import add_article,get_articles
+from database.request_DB import add_article, get_articles
 
 app = Flask(__name__)
 
@@ -13,6 +13,11 @@ def hello_world():
 @app.route("/about")
 def about():
     return render_template('about.html')
+
+
+@app.route("/reg", methods=["GET", ])
+def registration_user():
+    return render_template('registration/reg.html')
 
 
 @app.route("/article")
@@ -34,22 +39,6 @@ def create_article():
         return render_template('create.html')
 
 
-@app.route("/registr")
-def registration():
-    text = "<h3>Регистрация</h3><br>"
-    form = """<form>
-            <label for="fname">Имя:</label><br>
-             <input type='text' id="fname" name="fname" value=""><br>
-             <label for="fname">Пароль:</label><br>
-             <input type='text' id="pas" name="fname" value=""><br>
-             <label for="fname">Почта:</label><br>
-            <input type='text' id="email" name="email" value=""><br><br>
-            <input type="submit" value="Регистрация">
-            </form>"""
-
-    return text + form
-
-
 if __name__ == '__main__':
     initDB()
-    app.run(debug=False)
+    app.run(debug=False, port=5001)
