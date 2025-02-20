@@ -1,0 +1,15 @@
+{% extends 'registration/base.html' %}
+
+{% block title %}
+ Вход
+{% endblock %}
+
+{% block content %}
+    <h1>Вход на сайт</h1>
+    <form method="POST" class="form-control">
+        <input type="text" name="username" placeholder="Введите логин" class="form-control"><br>
+        <input type="password" name="password" placeholder="Введите пароль" class="form-control"><br>
+        <button class="btn btn-success" type="submit">Вход</button>
+    </form>
+    <h4>{{mes}}</h4>
+{% endblock %}

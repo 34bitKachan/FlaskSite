@@ -7,9 +7,11 @@
 {% block content %}
     <h1>Регистрация</h1>
     <form method="POST" class="form-control">
-        <input type="text" name="title" placeholder="Введите логин" class="form-control"><br>
-        <input type="text" name="title" placeholder="email" class="form-control"><br>
-        <input type="text" name="text" placeholder="Придумайте пароль" class="form-control"><br>
-        <button class="btn btn-success" type="submit">Добавить</button>
+        <input type="text" name="username" placeholder="Введите логин" class="form-control"><br>
+        <input type="text" name="email" placeholder="email" class="form-control"><br>
+        <input type="text" name="password" placeholder="Придумайте пароль" class="form-control"><br>
+        <button class="btn btn-success" type="submit">Регистрация!</button>
     </form>
+
+    <h4>{{mes}}</h4>
 {% endblock %}

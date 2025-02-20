@@ -1,6 +1,6 @@
 .venv
 .idea
 *.db
-
-database/__pycache__
+*.cpython-312.pyc
+database/__pycache__/
 
