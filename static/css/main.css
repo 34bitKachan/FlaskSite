@@ -1,0 +1,33 @@
+body {
+    background-color: #eee;
+}
+
+.header_img {
+    height: 64px;
+    width: 64px;
+}
+.footer_img {
+    height: 48px;
+    width: 48px;
+}
+
+.page {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height:100vh;
+}
+
+.content {
+    max-width:100vh;
+    margin: 0 auto;
+    padding 40px 20px;
+    flex: 1 1 auto;
+}
+
+header, footer {
+    background: #fff;
+    padding:10px;
+    -webkit-box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    О нас
+{% endblock %}
+
+{% block content %}
+    <h1>Статьи</h1>
+    {% for post in posts %}
+        <div>
+            <h4>{{ post.title }}</h4>
+            <p>{{post.text}}</p>
+        </div>
+        <br>
+    {% endfor %}
+{% endblock %}
