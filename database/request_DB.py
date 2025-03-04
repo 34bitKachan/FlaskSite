@@ -31,6 +31,14 @@ def get_user_login(username: str, password: str) -> dict:
                               (username, password)).fetchone()
     return user
 
+def get_user_id(user_id) -> dict:
+    with sqlite3.connect('article.db') as db:
+        db.row_factory = sqlite3.Row
+        cursor = db.cursor()
+        user = cursor.execute("SELECT id, username, email FROM users WHERE username = ? AND password = ?",
+                              (username, password)).fetchone()
+    return user['id']
+
 
 def get_articles():
     articles_dict = []

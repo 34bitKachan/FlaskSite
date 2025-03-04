@@ -1,13 +1,33 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from database.create import initDB
 from database.request_DB import add_article, get_articles, add_user, get_user_login
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'bbc8c139920f6e04392498074514b5376ad0e615'
 
+login_manager = LoginManager(app)
 
 @app.route("/")
-def hello_world():
-    return render_template('index.html')
+def index():
+    if 'visits' in session:
+        session['visits'] = session.get('visits') + 1
+    else:
+        session['visits'] = 1
+    return render_template('index.html', mes=session['visits'])
+
+
+@app.route("/session")
+def session_get():
+    data = [1, 2, 3, 4]
+    session.permanent = True
+    if 'dat' not in session:
+        session['dat'] = data
+    else:
+        session['dat'][1] += 1
+        session.modified = True
+    return f"session['dat']:: {session['dat']}"
 
 
 @app.route("/about")
@@ -21,6 +41,7 @@ def registration_user():
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
+        password = generate_password_hash(password=password)
         if username != "" and email != "" and password != "":
             is_create = add_user(username=username, password=password, email=email)
             if is_create:
@@ -28,6 +49,7 @@ def registration_user():
             return render_template('registration/reg.html', mes="Имя пользователя занято")
         return render_template('registration/reg.html', mes="Заполните все поля!")
     return render_template('registration/reg.html')
+
 
 @app.route("/sing_in", methods=["POST", "GET"])
 def login():
