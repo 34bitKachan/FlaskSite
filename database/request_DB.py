@@ -23,21 +23,23 @@ def add_user(username: str, password: str, email: str) -> bool:
     return result
 
 
-def get_user_login(username: str, password: str) -> dict:
+def get_user_login(username: str) -> dict:
     with sqlite3.connect('article.db') as db:
         db.row_factory = sqlite3.Row
         cursor = db.cursor()
-        user = cursor.execute("SELECT id, username, email FROM users WHERE username = ? AND password = ?",
-                              (username, password)).fetchone()
+        from werkzeug.security import generate_password_hash
+        user = cursor.execute("SELECT id, username, email, password FROM users WHERE username = ?",
+                              (username,)).fetchone()
     return user
 
 def get_user_id(user_id) -> dict:
     with sqlite3.connect('article.db') as db:
         db.row_factory = sqlite3.Row
         cursor = db.cursor()
-        user = cursor.execute("SELECT id, username, email FROM users WHERE username = ? AND password = ?",
-                              (username, password)).fetchone()
-    return user['id']
+        user = cursor.execute("SELECT id, username, email FROM users WHERE id = ?",
+                              (user_id,)).fetchone()
+        print("db user_id")
+    return user
 
 
 def get_articles():

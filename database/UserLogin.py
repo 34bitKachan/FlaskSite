@@ -2,8 +2,13 @@ import database.request_DB
 
 
 class UserLogin():
-    def fromDB(self, user_id, db):
-        self.__user = database.request_DB.get_user_id()
+    def fromDB(self, user_id):
+        self.__user = database.request_DB.get_user_id(user_id)
+        return self
+
+    def create(self,user):
+        self.__user = user
+        return self
 
     def is_authenticated(self):
         return True

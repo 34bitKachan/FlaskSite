@@ -2,12 +2,20 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from database.create import initDB
 from database.request_DB import add_article, get_articles, add_user, get_user_login
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user, login_required
+from database.UserLogin import UserLogin
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'bbc8c139920f6e04392498074514b5376ad0e615'
 
 login_manager = LoginManager(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    print("load_user")
+    return UserLogin().fromDB(user_id)
+
 
 @app.route("/")
 def index():
@@ -17,17 +25,17 @@ def index():
         session['visits'] = 1
     return render_template('index.html', mes=session['visits'])
 
-
-@app.route("/session")
-def session_get():
-    data = [1, 2, 3, 4]
-    session.permanent = True
-    if 'dat' not in session:
-        session['dat'] = data
-    else:
-        session['dat'][1] += 1
-        session.modified = True
-    return f"session['dat']:: {session['dat']}"
+#
+# @app.route("/session")
+# def session_get():
+#     data = [1, 2, 3, 4]
+#     session.permanent = True
+#     if 'dat' not in session:
+#         session['dat'] = data
+#     else:
+#         session['dat'][1] += 1
+#         session.modified = True
+#     return f"session['dat']:: {session['dat']}"
 
 
 @app.route("/about")
@@ -57,9 +65,12 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         if username != "" and password != "":
-            user = get_user_login(username=username, password=password)
-            print(user)
-            if user:
+            user = get_user_login(username=username)
+            if not user:
+                return render_template('registration/sing_in.html', mes="Неправильный логин или пароль")
+            if check_password_hash(user['password'], password):
+                userlogin = UserLogin().create(user)
+                login_user(userlogin)
                 return redirect('/')
             return render_template('registration/sing_in.html', mes="Неправильный логин или пароль")
         return render_template('registration/sing_in.html', mes="Заполните все поля!")
@@ -73,6 +84,7 @@ def get_article():
 
 
 @app.route("/create", methods=["POST", "GET"])
+@login_required
 def create_article():
     if request.method == "POST":
         title = request.form.get("title")
@@ -87,4 +99,4 @@ def create_article():
 
 if __name__ == '__main__':
     initDB()
-    app.run(debug=False, port=5001)
+    app.run(debug=True, port=5001)
