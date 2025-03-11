@@ -1,0 +1,22 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}
+ Админка
+{% endblock %}
+
+{% block content %}
+    <h1>Вход на сайт</h1>
+    <form method="POST" class="form-control">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                  <div class="notification {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <input type="text" name="username" placeholder="Введите пароль" class="form-control"><br>
+        <input type="password" name="psw" placeholder="Введите пароль" class="form-control"><br>
+        <button class="btn btn-success" type="submit">Вход</button>
+    </form>
+    <h4>{{mes}}</h4>
+{% endblock %}

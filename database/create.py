@@ -13,7 +13,8 @@ def initDB():
                             id INTEGER PRIMARY KEY,
                             username VARCHAR(255) NOT NULL,
                             password VARCHAR(255) NOT NULL,
-                            email VARCHAR(255) NOT NULL
+                            email VARCHAR(255) NOT NULL,
+                            avatar BLOB DEFAULT NULL
                             )""")
 
         db.commit()

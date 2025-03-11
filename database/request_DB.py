@@ -15,7 +15,7 @@ def add_user(username: str, password: str, email: str) -> bool:
         user_exists = cursor.fetchone()[0]
         print(user_exists)
         if user_exists == 0:
-            cursor.execute("INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+            cursor.execute("INSERT INTO users (username, password, email, avatar) VALUES (?, ?, ?, NULL)",
                            (username, password, email))
             db.commit()
             print("Пользователь добавлен в БД")
@@ -32,11 +32,12 @@ def get_user_login(username: str) -> dict:
                               (username,)).fetchone()
     return user
 
+
 def get_user_id(user_id) -> dict:
     with sqlite3.connect('article.db') as db:
         db.row_factory = sqlite3.Row
         cursor = db.cursor()
-        user = cursor.execute("SELECT id, username, email FROM users WHERE id = ?",
+        user = cursor.execute("SELECT id, username, email, avatar FROM users WHERE id = ?",
                               (user_id,)).fetchone()
         print("db user_id")
     return user
@@ -51,3 +52,22 @@ def get_articles():
         articles = cursor.fetchall()
         articles_dict = [dict(zip(columns, article)) for article in articles]
     return articles_dict
+
+
+def updateUserAvatar(img, id):
+    if not img:
+        return False
+
+    res = False
+    binary = sqlite3.Binary(img)
+    try:
+        with sqlite3.connect('article.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users SET avatar = ? WHERE id = ?",
+                           (binary, id)).fetchone()
+            conn.commit()
+            res = True
+    except sqlite3.Error as e:
+        print("Error update avatar in DB " + str(e))
+        return False
+    return res
