@@ -110,6 +110,10 @@ def login():
         return render_template('registration/sing_in.html', mes="Заполните все поля!")
     return render_template('registration/sing_in.html', form=form)
 
+@app.route('/mobile')
+def mobile():
+    return render_template('mobile.html')
+
 
 @app.route('/logout')
 def logout():
